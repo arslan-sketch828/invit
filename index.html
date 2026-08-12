@@ -1,512 +1,159 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Приглашение на свадьбу — Чингиз & Мадина</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Приглашение на той</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% 15%,#503827,#120c09 75%);
+display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto;font-family:Georgia,serif;color:#efd2a5}
+.wrap{width:min(760px,96vw);text-align:center}
+.envelope{cursor:pointer;transition:.5s;filter:drop-shadow(0 25px 35px #000b)}
+.envelope:hover{transform:translateY(-5px) scale(1.01)}
+.envelope img{width:100%;display:block;border-radius:16px}
+.hint{margin-top:16px;letter-spacing:2px;font-size:17px}
+.card{display:none;max-height:none;background:#f7ecd9;color:#4b3526;border-radius:18px;overflow:hidden;box-shadow:0 25px 70px #000b;animation:open .7s ease}
+@keyframes open{from{opacity:0;transform:scale(.92) translateY(25px)}to{opacity:1;transform:none}}
+.inner{padding:48px 30px 38px;background:linear-gradient(#fff8eb,#ead9bd)}
+.small{letter-spacing:4px;font-size:15px;color:#8a6747}
+.names{font-size:52px;font-style:italic;color:#76502f;margin:15px 0 25px}
+.invite{font-size:20px;line-height:1.85;letter-spacing:.4px;margin-bottom:25px;text-align:center}.invite p{margin:0 0 24px}.count{line-height:1.8}
+.details{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin:18px 0}
+.detail{padding:12px 20px;border-top:1px solid #b99b75;border-bottom:1px solid #b99b75}
+.count{margin:24px 0;font-size:17px}
+.music{border:1px solid #a47d52;border-radius:30px;background:#fff6e7;padding:11px 20px;color:#6d4b2f;cursor:pointer}
+.close{display:block;margin:22px auto 0;border:0;background:#6b4930;color:#fff0d2;border-radius:25px;padding:12px 28px;cursor:pointer;font-size:16px}
+.note{margin-top:15px;font-size:13px;color:#806b57}
+@media(max-width:520px){.names{font-size:40px}.invite{font-size:18px}}
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+.invite-image{width:100%;height:auto;display:block;margin:0;}
+.card .inner{padding:0;background:transparent;}
 
-    body {
-      background: #110912;
-      font-family: 'Cormorant Garamond', serif;
-      color: #333;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      overflow-x: hidden;
-      padding: 20px;
-    }
+/* Анимация и стили карты */
+.card {
+  max-height: 92vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.card .inner {
+  width: 100%;
+}
+.invite-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  transform-origin: 50% 12%;
+  animation: invitationSway 4.5s ease-in-out infinite;
+}
+@keyframes invitationSway {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  25% { transform: rotate(0.45deg) translateY(-2px); }
+  50% { transform: rotate(0deg) translateY(-4px); }
+  75% { transform: rotate(-0.45deg) translateY(-2px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .invite-image { animation: none; }
+}
 
-    /* ФОН С ЦВЕТАМИ */
-    .bg-flowers {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: radial-gradient(circle at center, #2c1628 0%, #0d060e 100%);
-      z-index: 1;
-      overflow: hidden;
-    }
-
-    /* Экраны сцены */
-    .wrapper {
-      position: relative;
-      z-index: 10;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      max-width: 500px;
-      perspective: 1200px;
-    }
-
-    /* -------------------------------------------------------------
-       КОНВЕРТ И СУРГУЧНАЯ ПЕЧАТЬ 
-    ------------------------------------------------------------- */
-    .envelope-container {
-      position: relative;
-      width: 340px;
-      height: 240px;
-      background-color: #f7f3ec;
-      border-radius: 8px;
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(212, 175, 55, 0.2);
-      cursor: pointer;
-      transition: transform 0.6s ease, opacity 0.8s ease;
-      transform-style: preserve-3d;
-    }
-
-    .envelope-container.opening {
-      animation: zoomAndFade 1.4s forwards ease-in-out;
-    }
-
-    @keyframes zoomAndFade {
-      0% { transform: scale(1) rotate(0deg); opacity: 1; }
-      40% { transform: scale(1.1) rotate(-2deg); opacity: 1; }
-      100% { transform: scale(1.3) translateY(100px); opacity: 0; visibility: hidden; }
-    }
-
-    /* Клапан конверта (Верхний треугольник) */
-    .flap-top {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 0;
-      height: 0;
-      border-left: 170px solid transparent;
-      border-right: 170px solid transparent;
-      border-top: 130px solid #ece4d8;
-      transform-origin: top;
-      transition: transform 0.6s ease 0.2s;
-      z-index: 5;
-      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
-    }
-
-    .envelope-container.opening .flap-top {
-      transform: rotateX(180deg);
-      z-index: 2;
-    }
-
-    /* Нижние слои конверта */
-    .pocket {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 0;
-      border-left: 170px solid #e3d7c7;
-      border-right: 170px solid #e3d7c7;
-      border-bottom: 125px solid #dad0be;
-      border-radius: 0 0 8px 8px;
-      z-index: 4;
-    }
-
-    /* КРАСНАЯ СУРГУЧНАЯ ПЕЧАТЬ (Без букв) */
-    .wax-seal {
-      position: absolute;
-      top: 110px;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 72px;
-      height: 72px;
-      background: radial-gradient(circle at 35% 35%, #e62b45 0%, #b80d28 50%, #6e0012 100%);
-      border-radius: 50%;
-      box-shadow: 
-        0 8px 20px rgba(0,0,0,0.5),
-        inset 0 3px 6px rgba(255,255,255,0.4),
-        inset 0 -4px 8px rgba(0,0,0,0.6);
-      z-index: 10;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      cursor: pointer;
-    }
-
-    .wax-seal::before {
-      content: '';
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      border: 2px dashed #870014;
-      box-shadow: inset 0 0 5px rgba(0,0,0,0.4);
-      background: radial-gradient(circle, #c4142f 0%, #91041b 100%);
-    }
-
-    .wax-seal::after {
-      content: '❀';
-      position: absolute;
-      font-size: 24px;
-      color: #70000f;
-      text-shadow: 1px 1px 1px rgba(255,255,255,0.2), -1px -1px 1px rgba(0,0,0,0.5);
-    }
-
-    .wax-seal:hover {
-      transform: translate(-50%, -50%) scale(1.08);
-      box-shadow: 0 10px 25px rgba(230, 43, 69, 0.4), inset 0 3px 6px rgba(255,255,255,0.4);
-    }
-
-    .click-hint {
-      position: absolute;
-      bottom: -45px;
-      width: 100%;
-      text-align: center;
-      color: #e2c9a1;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.85rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      animation: floatText 2s infinite ease-in-out;
-    }
-
-    @keyframes floatText {
-      0%, 100% { transform: translateY(0); opacity: 0.7; }
-      50% { transform: translateY(-5px); opacity: 1; }
-    }
-
-    /* -------------------------------------------------------------
-       КРАСИВАЯ ПРИГЛАСИТЕЛЬНАЯ КАРТОЧКА С ЦВЕТАМИ
-    ------------------------------------------------------------- */
-    .card-container {
-      position: absolute;
-      width: 100%;
-      max-width: 460px;
-      background: #fffdfa;
-      border-radius: 16px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-      opacity: 0;
-      transform: translateY(60px) scale(0.9);
-      pointer-events: none;
-      transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-      overflow: hidden;
-      border: 1px solid rgba(212, 175, 55, 0.3);
-    }
-
-    .card-container.show {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      pointer-events: auto;
-    }
-
-    /* Цветочные иллюстрации по углам */
-    .floral-corner {
-      position: absolute;
-      width: 120px;
-      height: 120px;
-      pointer-events: none;
-      z-index: 2;
-    }
-    .floral-top-left { top: 0; left: 0; }
-    .floral-top-right { top: 0; right: 0; transform: scaleX(-1); }
-    .floral-bottom-left { bottom: 0; left: 0; transform: scaleY(-1); }
-    .floral-bottom-right { bottom: 0; right: 0; transform: scale(-1, -1); }
-
-    .card-inner {
-      padding: 45px 30px;
-      text-align: center;
-      position: relative;
-      z-index: 3;
-      background: radial-gradient(ellipse at center, rgba(255,255,255,1) 0%, rgba(253,248,242,0.8) 100%);
-    }
-
-    .gold-frame {
-      border: 1px solid #d4af37;
-      padding: 30px 20px;
-      border-radius: 10px;
-      position: relative;
-      outline: 1px solid #f2e3be;
-      outline-offset: -6px;
-    }
-
-    .header-title {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.75rem;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: #9e7d3b;
-      margin-bottom: 15px;
-    }
-
-    .couple-names {
-      font-family: 'Great Vibes', cursive;
-      font-size: 3.6rem;
-      color: #4a1525;
-      line-height: 1.1;
-      margin: 15px 0;
-      text-shadow: 1px 1px 0px rgba(212, 175, 55, 0.2);
-    }
-
-    .and-symbol {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 2rem;
-      color: #c49a45;
-      display: block;
-      margin: -10px 0;
-    }
-
-    .divider-flower {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 20px 0;
-      color: #d4af37;
-      font-size: 1.2rem;
-    }
-    .divider-flower::before, .divider-flower::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(to right, transparent, #d4af37, transparent);
-      margin: 0 15px;
-    }
-
-    .invitation-text {
-      font-size: 1.2rem;
-      line-height: 1.6;
-      color: #4a3e3d;
-      margin-bottom: 25px;
-      font-weight: 400;
-    }
-
-    .warm-words {
-      background: rgba(247, 238, 226, 0.6);
-      border-left: 3px solid #d4af37;
-      border-right: 3px solid #d4af37;
-      padding: 15px;
-      border-radius: 6px;
-      font-style: italic;
-      font-size: 1.15rem;
-      color: #612333;
-      margin: 20px 0 30px 0;
-      line-height: 1.5;
-    }
-
-    .details-card {
-      background: #ffffff;
-      border: 1px dashed #d4af37;
-      border-radius: 12px;
-      padding: 20px 15px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-    }
-
-    .date-badge {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.8rem;
-      letter-spacing: 2px;
-      color: #8c6d3b;
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-
-    .main-date {
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: #4a1525;
-      margin: 8px 0;
-      letter-spacing: 1px;
-    }
-
-    .location-title {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.8rem;
-      letter-spacing: 2px;
-      color: #8c6d3b;
-      margin-top: 15px;
-      text-transform: uppercase;
-    }
-
-    .location-name {
-      font-size: 1.4rem;
-      font-weight: 600;
-      color: #2c1d11;
-      margin-top: 4px;
-    }
-
-    .location-city {
-      font-size: 1.1rem;
-      color: #665548;
-    }
-
-    .music-btn {
-      position: fixed;
-      bottom: 25px;
-      right: 25px;
-      width: 48px;
-      height: 48px;
-      background: #ffffff;
-      border: 1px solid #d4af37;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      z-index: 100;
-      font-size: 20px;
-      transition: transform 0.3s;
-    }
-    .music-btn:hover {
-      transform: scale(1.1);
-    }
-
-    .petal {
-      position: absolute;
-      background: linear-gradient(135deg, #ffb7c5, #e62b45);
-      border-radius: 15px 0 15px 0;
-      opacity: 0.7;
-      pointer-events: none;
-      animation: fall 6s linear infinite;
-    }
-
-    @keyframes fall {
-      0% { transform: translateY(-10vh) rotate(0deg); opacity: 0.8; }
-      100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
-    }
-  </style>
+.location-block{
+  padding:18px 18px 24px;
+  text-align:center;
+  background:linear-gradient(#fff8eb,#ead9bd);
+}
+.location-title{
+  margin:0 0 8px;
+  font-size:18px;
+  letter-spacing:1px;
+  color:#76502f;
+}
+.location-address{
+  margin:0 0 14px;
+  font-size:17px;
+  line-height:1.5;
+  color:#4b3526;
+}
+.map-wrap{
+  width:min(420px,92%);
+  height:190px;
+  margin:0 auto;
+  border:2px solid #b99b75;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 8px 24px #0002;
+}
+.map-wrap iframe{
+  width:100%;
+  height:100%;
+  border:0;
+  display:block;
+}
+.map-link{
+  display:inline-block;
+  margin-top:10px;
+  color:#6b4930;
+  text-decoration:none;
+  font-size:14px;
+}
+</style>
 </head>
 <body>
 
-  <div class="bg-flowers" id="petalContainer"></div>
+<audio id="bgMusic" preload="auto" loop>
+  <source src="data:audio/mpeg;base64,SUQzAwAAAAAfdlRJVDIAAAAnAAAB//4dBDUEMgQ1BEEEQgQwBCAAKABTAGUAZgBvAG4ALgBtAGUAKQBUUEUxAAAAQQAAAf/+GAQzBD4EQARMBCAAHQQ4BDoEPgQ7BDAENQQyBCAARgBlAGEAdAAuACAAIARDBDoEOAQgABIEMgQ1BEAERQQ..." type="audio/mp3">
+</audio>
 
-  <audio id="bgMusic" loop preload="auto">
-    <source src="https://assets.mixkit.co/music/preview/mixkit-romantic-wedding-violin-1090.mp3" type="audio/mpeg">
-  </audio>
+<div class="wrap">
+  <div class="envelope" id="env" onclick="openCard()">
+    <img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=1000&auto=format&fit=crop" alt="Конверт">
+    <div class="hint">НАЖМИТЕ, ЧТОБЫ ОТКРЫТЬ</div>
+  </div>
 
-  <button class="music-btn" id="musicBtn" style="display: none;" title="Включить/Выключить музыку">🎵</button>
+  <div class="card" id="card">
+    <div class="inner">
+      <img src="https://sun9-28.userapi.com/impg/IeC62_J09d66f4oV305z4kM6wJ66s1931-15_A/563a34f59c8.jpg?size=1080x1920&quality=95&sign=2f4f22c15144b6bc69363a033c4bc9f1&type=album" class="invite-image" alt="Приглашение">
 
-  <div class="wrapper">
-    <!-- Сцена 1: Конверт с красной сургучной печатью -->
-    <div class="envelope-container" id="envelope">
-      <div class="flap-top"></div>
-      <div class="pocket"></div>
-      
-      <!-- Красная печать БЕЗ букв -->
-      <div class="wax-seal" id="waxSeal"></div>
-
-      <div class="click-hint">Нажмите на печать</div>
-    </div>
-
-    <!-- Сцена 2: Пригласительное письмо -->
-    <div class="card-container" id="weddingCard">
-      <svg class="floral-corner floral-top-left" viewBox="0 0 100 100">
-        <path d="M0,0 Q50,10 70,50 Q20,60 0,0" fill="#e8a5b8" opacity="0.6"/>
-        <circle cx="20" cy="20" r="12" fill="#c4142f" opacity="0.7"/>
-        <circle cx="40" cy="25" r="8" fill="#f4c2c2" opacity="0.8"/>
-        <path d="M0,40 Q30,40 50,80" stroke="#7a9a60" stroke-width="2" fill="none"/>
-      </svg>
-      <svg class="floral-corner floral-top-right" viewBox="0 0 100 100">
-        <path d="M0,0 Q50,10 70,50 Q20,60 0,0" fill="#e8a5b8" opacity="0.6"/>
-        <circle cx="20" cy="20" r="12" fill="#c4142f" opacity="0.7"/>
-        <circle cx="40" cy="25" r="8" fill="#f4c2c2" opacity="0.8"/>
-        <path d="M0,40 Q30,40 50,80" stroke="#7a9a60" stroke-width="2" fill="none"/>
-      </svg>
-      <svg class="floral-corner floral-bottom-left" viewBox="0 0 100 100">
-        <path d="M0,0 Q50,10 70,50 Q20,60 0,0" fill="#e8a5b8" opacity="0.6"/>
-        <circle cx="20" cy="20" r="12" fill="#c4142f" opacity="0.7"/>
-        <path d="M0,40 Q30,40 50,80" stroke="#7a9a60" stroke-width="2" fill="none"/>
-      </svg>
-      <svg class="floral-corner floral-bottom-right" viewBox="0 0 100 100">
-        <path d="M0,0 Q50,10 70,50 Q20,60 0,0" fill="#e8a5b8" opacity="0.6"/>
-        <circle cx="20" cy="20" r="12" fill="#c4142f" opacity="0.7"/>
-        <path d="M0,40 Q30,40 50,80" stroke="#7a9a60" stroke-width="2" fill="none"/>
-      </svg>
-
-      <div class="card-inner">
-        <div class="gold-frame">
-          <p class="header-title">Приглашение на свадьбу</p>
-          
-          <h1 class="couple-names">
-            Чингиз
-            <span class="and-symbol">&</span>
-            Мадина
-          </h1>
-
-          <div class="divider-flower">🌸</div>
-
-          <p class="invitation-text">
-            Дорогие и близкие! В нашей жизни наступает самый трепетный и важный день.
-          </p>
-
-          <div class="warm-words">
-            «Мы будем невероятно счастливы и рады, если вы разделите с нами этот особенный незабываемый день!»
-          </div>
-
-          <div class="details-card">
-            <p class="date-badge">Дата торжества</p>
-            <p class="main-date">30 АВГУСТА 2026</p>
-
-            <div class="divider-flower" style="margin: 10px 0;">✨</div>
-
-            <p class="location-title">Место проведения</p>
-            <p class="location-name">КАРАВАН САРАЙ</p>
-            <p class="location-city">г. Токмок</p>
-          </div>
+      <!-- Блок с картой -->
+      <div class="location-block">
+        <h3 class="location-title">Место проведения</h3>
+        <p class="location-address">Ресторан «Алтын Холл»<br>г. Бишкек, ул. Примерная, 123</p>
+        <div class="map-wrap">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d46788.13437599049!2d74.52989182167968!3d42.87462110000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x389eb7dc91b12361%3A0xa2078301142bc3c7!2z0JHQuNGI0LrQtdC6!5e0!3m2!1sru!3skg!4v1700000000000!5m2!1sru!3skg" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
         </div>
+        <a class="map-link" href="https://maps.google.com" target="_blank" rel="noopener">Открыть на карте Google Maps →</a>
+      </div>
+
+      <div style="padding: 0 20px 20px 20px;">
+        <button class="music" onclick="toggleAudio()">🎵 Музыка</button>
+        <button class="close" onclick="closeCard()">Закрыть</button>
       </div>
     </div>
   </div>
+</div>
 
-  <script>
-    const envelope = document.getElementById('envelope');
-    const waxSeal = document.getElementById('waxSeal');
-    const weddingCard = document.getElementById('weddingCard');
-    const bgMusic = document.getElementById('bgMusic');
-    const musicBtn = document.getElementById('musicBtn');
-    const petalContainer = document.getElementById('petalContainer');
-
-    let isPlaying = false;
-
-    function createPetals() {
-      for (let i = 0; i < 25; i++) {
-        const petal = document.createElement('div');
-        petal.className = 'petal';
-        petal.style.left = Math.random() * 100 + 'vw';
-        petal.style.width = (Math.random() * 12 + 8) + 'px';
-        petal.style.height = (Math.random() * 15 + 10) + 'px';
-        petal.style.animationDuration = (Math.random() * 4 + 4) + 's';
-        petal.style.animationDelay = (Math.random() * 5) + 's';
-        petalContainer.appendChild(petal);
-      }
-    }
-
-    waxSeal.addEventListener('click', () => {
-      envelope.classList.add('opening');
-
-      setTimeout(() => {
-        weddingCard.classList.add('show');
-        createPetals();
-      }, 700);
-
-      bgMusic.play().then(() => {
-        isPlaying = true;
-        musicBtn.style.display = 'flex';
-      }).catch(err => {
-        console.log("Автовоспроизведение заблокировано браузером", err);
-      });
-    });
-
-    musicBtn.addEventListener('click', () => {
-      if (isPlaying) {
-        bgMusic.pause();
-        musicBtn.textContent = '🔇';
-      } else {
-        bgMusic.play();
-        musicBtn.textContent = '🎵';
-      }
-      isPlaying = !isPlaying;
-    });
-  </script>
+<script>
+function openCard(){
+  document.getElementById('env').style.display='none';
+  document.getElementById('card').style.display='block';
+  var a=document.getElementById('bgMusic');
+  a.play().catch(function(e){console.log("Autoplay blocked")});
+}
+function closeCard(){
+  document.getElementById('card').style.display='none';
+  document.getElementById('env').style.display='block';
+  var a=document.getElementById('bgMusic');
+  a.pause();
+}
+function toggleAudio(){
+  var a=document.getElementById('bgMusic');
+  if(a.paused){a.play();}else{a.pause();}
+}
+</script>
 
 </body>
 </html>
